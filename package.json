@@ -1,0 +1,25 @@
+{
+  "name": "mapbox-gl-draw-scale-mode",
+  "version": "1.0.0",
+  "description": "A scaling mode plugin for Mapbox GL JS Draw.",
+  "main": "index.js",
+  "homepage" : "https://andrei-gheorghiu.github.io/mapbox-gl-draw-scale-mode/",
+  "repository" : "https://github.com/andrei-gheorghiu/mapbox-gl-draw-scale-mode",
+  "keywords": [
+    "mapbox",
+    "mapbox-gl",
+    "mapbox-gl-draw"
+  ],
+  "scripts": {
+    "build": "browserify index.js --standalone ScaleMode > dist/mapbox-gl-draw-scale-mode.min.js"
+  },
+  "author": "Andrei Gheorghiu <arhicub@gmail.com> (http://websiter.ro)",
+  "license": "ISC",
+  "dependencies": {
+    "@turf/bearing": "^5.1.5",
+    "@turf/centroid": "^6.0.0",
+    "@turf/destination": "^6.0.0",
+    "@turf/distance": "^6.0.0",
+    "browserify": "^16.1.1"
+  }
+}
