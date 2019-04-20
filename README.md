@@ -3,25 +3,15 @@ Mapbox GL Draw Scale Mode
 
 Implements a scale mode in GL Draw. Module is still in active development. See [Mapbox GL Draw Scale Mode Example](https://andrei-gheorghiu.github.io/mapbox-gl-draw-scale-mode/).
 
-Note: Props go to [Mapster](https://github.com/mapstertech), creator of [mapbox-gl-draw-rotate-mode](https://github.com/mapstertech/mapbox-gl-draw-rotate-mode), which I used as starting point and guide in creating the current plugin.
+Note: Props go to [Mapster](https://github.com/mapstertech), creator of [mapbox-gl-draw-rotate-mode](https://github.com/mapstertech/mapbox-gl-draw-rotate-mode), which was used as starting point and guide in creating this plugin.
 
 Installation
 ------------
-
-### npm
 
 ```
 npm install mapbox-gl-draw-scale-mode
 
 import ScaleMode from 'mapbox-gl-draw-scale-mode';
-```
-
-### browser
-
-Get the js file from `dist/` folder and include it in your project.
-
-```
-<script type="text/javascript" src="mapbox-gl-draw-scale-mode.js"></script>
 ```
 
 ## Usage

@@ -5,9 +5,9 @@ const EventEmitter = require("events");
 const emitter = new EventEmitter();
 
 var ScaleMode = {
-  scalestart: function(selectedFeature, originalCenter) {},
-  scaling: function(selectedFeature, originalCenter, lastMouseDown) {},
-  scaleend: function(selectedFeature) {},
+  scalestart: function() {},
+  scaling: function() {},
+  scaleend: function() {},
 
   onSetup: function(opts) {
     var state = {};
@@ -24,21 +24,21 @@ var ScaleMode = {
           this.scaling(
               state.selectedFeature,
               state.originalCenter,
-              state.lastMouseDownLngLat
+              state.scaleFactor
           );
         }.bind(this)
     );
     emitter.addListener(
         "scaleend",
         function() {
-          this.scaleend(state.selectedFeature, state.lastMouseDownLngLat);
+          this.scaleend(state.selectedFeature, state.scaleFactor);
         }.bind(this)
     );
 
-    state.selectedFeature = opts.selectedFeature || false;
-    state.lastMouseDownLngLat = false;
-    state.originalCenter = false;
-    state.mode = "scale" || false;
+    state.selectedFeature = opts.selectedFeature || undefined;
+    state.scaleFactor = undefined;
+    state.originalCenter = undefined;
+    state.mode = "scale";
     return state;
   },
 
@@ -51,10 +51,10 @@ var ScaleMode = {
         );
         state.originalCenter = centroid(e.featureTarget);
         state.originalFeature = e.featureTarget;
-        state.originalDistance = distance(state.originalCenter, [
-          e.lngLat.lng,
-          e.lngLat.lat
-        ]);
+        state.originalDistance = Math.max(
+            distance(state.originalCenter, [e.lngLat.lng,e.lngLat.lat]),
+            0.1
+        );
         emitter.emit("scalestart");
       }
     }
@@ -68,7 +68,6 @@ var ScaleMode = {
   onDrag: function(state, e) {
     if (state.selectedFeature && state.mode) {
       if (state.mode === "scale") {
-        state.lastMouseDownLngLat = { lng: e.lngLat.lng, lat: e.lngLat.lat };
         switch (state.originalFeature.properties["meta:type"]) {
           case "Point":
             break;
@@ -76,9 +75,9 @@ var ScaleMode = {
           case "Polygon":
           case "MultiLineString":
           case "MultiPolygon":
-            var scaleFactor =
-                distance(state.originalCenter, [e.lngLat.lng, e.lngLat.lat]) /
-                Math.max(state.originalDistance, 0.1);
+            state.scaleFactor =
+                (distance(state.originalCenter, [e.lngLat.lng, e.lngLat.lat]) /
+                    state.originalDistance) || 1;
             break;
           default:
             return;
@@ -86,7 +85,7 @@ var ScaleMode = {
         emitter.emit("scaling");
         state.selectedFeature.geometry = transformScale(
             state.originalFeature,
-            scaleFactor
+            state.scaleFactor
         ).geometry;
         this._ctx.api.add(state.selectedFeature);
       }
@@ -96,10 +95,10 @@ var ScaleMode = {
   onMouseUp: function(state, e) {
     e.target["dragPan"].enable();
     emitter.emit("scaleend");
-    state.selectedFeature = false;
-    state.lastMouseDownLngLat = false;
-    state.originalCenter = false;
-    state.originalDistance = false;
+    state.selectedFeature = undefined;
+    state.scaleFactor = undefined;
+    state.originalCenter = undefined;
+    state.originalDistance = undefined;
     return state;
   }
 };
