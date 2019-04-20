@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A scaling mode plugin for Mapbox GL JS Draw.",
   "main": "index.js",
-  "homepage": "https://andrei-gheorghiu.github.io/mapbox-gl-draw-scale-mode/",
+  "homepage": "https://github.com/andrei-gheorghiu/mapbox-gl-draw-scale-mode",
   "repository": "https://github.com/andrei-gheorghiu/mapbox-gl-draw-scale-mode",
   "keywords": [
     "mapbox",
